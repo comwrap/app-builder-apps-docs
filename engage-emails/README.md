@@ -131,7 +131,7 @@ On the https://developer.adobe.com/console, navigate to your project and configu
 The templates could be modified as well as a new template can be created. The templates content and css are used in the automations.
 ![Templates Page](docs/templates_page.png "Templates Page")
 There is a list of predefined templates in application. To create a new template, go to the **Templates** page and click on the **Create** button.
-![Templates Edit](docs/templates_edit.png "Templates Edit")
+![Templates Edit](docs/template_edit.png "Templates Edit")
 The following fields are available for the template:
 - **Name**: The name of the template.
 - **Subject**: The subject of the template, which will be used in the email.
