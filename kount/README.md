@@ -18,8 +18,6 @@
 - [Additional Notes](#additional-notes)
 
 ---
-документні ресурси
-
 ## Overview
 
 This project is a microservice integration built using the Adobe App Builder. It connects Adobe Commerce with Kount, a fraud prevention and detection platform. The service processes order placement events from Adobe Commerce and communicates with Kount to retrieve and display risk statuses in the order admin grid.
