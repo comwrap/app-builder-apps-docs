@@ -3,15 +3,15 @@
 ## Table of Contents
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
-  - [Create Adobe App Builder Project](#create-adobe-app-builder-project)
-  - [Configure a New Integration in Adobe Commerce](#configure-a-new-integration-in-adobe-commerce)
-  - [Install Commerce Eventing Module](#install-commerce-eventing-module)
+    - [Create Adobe App Builder Project](#create-adobe-app-builder-project)
+    - [Configure a New Integration in Adobe Commerce](#configure-a-new-integration-in-adobe-commerce)
+    - [Install Commerce Eventing Module](#install-commerce-eventing-module)
 - [Application Deployment and Onboarding](#application-deployment-and-onboarding)
-  - [Download the Project](#download-the-project)
-  - [Configure the Project](#configure-the-project)
-  - [Deploy the Application](#deploy-the-application)
-  - [Onboarding](#onboarding)
-  - [Event Subscription](#event-subscription)
+    - [Download the Project](#download-the-project)
+    - [Configure the Project](#configure-the-project)
+    - [Deploy the Application](#deploy-the-application)
+    - [Onboarding](#onboarding)
+    - [Event Subscription](#event-subscription)
 - [Kount Configuration](#kount-configuration)
 - [Adobe IMS Configuration](#adobe-ims-configuration)
 - [Order Grid Updates](#order-grid-updates)
@@ -35,13 +35,13 @@ This project is a microservice integration built using the Adobe App Builder. It
    ```bash
    cd adobe-commerce-kount-app-builder-integration
    ```
-   
+
 ### Create Adobe App Builder Project
 1. Create a new App Builder project in Adobe Developer Console:
 
 Select the **App Builder** template during the project setup.
-    ![New project](./docs/app_builder_new_1.png "App Builder from template")
-    ![New project](./docs/app_builder_new_2.png "App Builder from template")
+![New project](./docs/app_builder_new_1.png "App Builder from template")
+![New project](./docs/app_builder_new_2.png "App Builder from template")
 
 2. Add API "Adobe Commerce with Adobe ID".
 
@@ -67,19 +67,19 @@ Credentials needed to enable and configure Adobe IMS in Adobe Commerce
       ![Adobe APIs](./docs/adobe_apis_1.png "Adobe APIs")
 
 4. Download the workspace configuration:
-  - From your workspace **Overview** page in the App Builder project, download the configuration file and save it as:
-    ```
-    ./adobe-commerce-kount-app-builder-integration/Kount-{workspace}.json
-    ```
-   ![Download Configuration](./docs/app_builder_json_1.png "Download project configuration")
+- From your workspace **Overview** page in the App Builder project, download the configuration file and save it as:
+  ```
+  ./adobe-commerce-kount-app-builder-integration/Kount-{workspace}.json
+  ```
+![Download Configuration](./docs/app_builder_json_1.png "Download project configuration")
 
 ### Configure a New Integration in Adobe Commerce
 1. In the Adobe Commerce Admin, navigate to **System > Extensions > Integrations**.
 2. Click **Add New Integration**:
-  - Enter a name for the integration.
-  - On the left, select **API** and grant access to all resources.
-    ![New Integration](docs/new-integration.png "New Integration")
-    ![Grant Access](docs/integration-all-apis-access.png "Grant Access to APIs")
+- Enter a name for the integration.
+- On the left, select **API** and grant access to all resources.
+  ![New Integration](docs/new-integration.png "New Integration")
+  ![Grant Access](docs/integration-all-apis-access.png "Grant Access to APIs")
 3. Save the integration and activate it.
 4. Note down the integration credentials (consumer key, consumer secret, access token, and access token secret).
 
@@ -113,7 +113,7 @@ For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for A
    aio app use Kount-{workspace}.json
    # this will create `.aio` and `.env` configuration files
    ```
-   
+
 5. Open `./adobe-commerce-kount-app-builder-integration/env.dist` file, copy all content and add to `./adobe-commerce-kount-app-builder-integration/.env`.
 
    Fill in the values in the .env file. The file describes where you can find the values for each environment variable.
@@ -137,9 +137,9 @@ For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for A
    npm run onboard
    ```
 3. Prepare and update `mesh.json`:
-  - Open `./adobe-commerce-kount-app-builder-integration/mesh.json`.
-  - Replace `{{RUNTIME_NAMESPACE}}` with App Builder runtime namespace name (can be found in `./adobe-commerce-kount-app-builder-integration/Kount-{workspace}.json` in `project.workspace.details.runtime.namespace.name` path).
-    ![Runtime name](./docs/runtime_name.png "Runtime name")
+- Open `./adobe-commerce-kount-app-builder-integration/mesh.json`.
+- Replace `{{RUNTIME_NAMESPACE}}` with App Builder runtime namespace name (can be found in `./adobe-commerce-kount-app-builder-integration/Kount-{workspace}.json` in `project.workspace.details.runtime.namespace.name` path).
+  ![Runtime name](./docs/runtime_name.png "Runtime name")
 
 4. Import or update the mesh:
    ```bash
@@ -147,6 +147,9 @@ For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for A
    # If mesh is already created:
    aio api-mesh update mesh.json
    ```
+In command output you will see MESH ID.
+
+5. Open `./adobe-commerce-kount-app-builder-integration/actions/registration/index.js` find and replace {{MESH_ID}} with MESH ID from previous command.
 
 ### Event Subscription
 Subscribe to Adobe Commerce events:
@@ -161,10 +164,12 @@ npm run commerce-event-subscribe
 2. Go to Admin -> Product Configuration  -> Api Keys and create  new api key for your App Builder app.
    ![Kount APi key](./docs/kount_api_1.png "Kount APi key")
    ![Kount APi key](./docs/kount_api_2.png "Kount APi key")
-   
+
 3. Add to `.env` file of the App Builder project the following variables and add your values here:
 
 ```
+CANCEL_ORDER_ON_DECLINE=true|false # Defines whether an order should be automatically canceled (`true`) or remain active (`false`) when a DECLINE result received from Kount.
+
 KOUNT_TOKEN_URL= # Kount token issuer url (see more details in .env.dist)
 KOUNT_API_URL= # Kount API url  (see more details in .env.dist)
 KOUNT_CLIENT_ID= # Kount API Client ID
