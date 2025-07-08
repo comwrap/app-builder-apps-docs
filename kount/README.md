@@ -7,7 +7,6 @@
     - [Configure a New Integration in Adobe Commerce](#configure-a-new-integration-in-adobe-commerce)
     - [Install Commerce Eventing Module](#install-commerce-eventing-module)
 - [Application Deployment and Onboarding](#application-deployment-and-onboarding)
-    - [Download the Project](#download-the-project)
     - [Configure the Project](#configure-the-project)
     - [Deploy the Application](#deploy-the-application)
     - [Onboarding](#onboarding)
@@ -18,6 +17,7 @@
 - [Additional Notes](#additional-notes)
 
 ---
+
 ## Overview
 
 This project is a microservice integration built using the Adobe App Builder. It connects Adobe Commerce with Kount, a fraud prevention and detection platform. The service processes order placement events from Adobe Commerce and communicates with Kount to retrieve and display risk statuses in the order admin grid.
@@ -71,7 +71,7 @@ Credentials needed to enable and configure Adobe IMS in Adobe Commerce
   ```
 ![Download Configuration](./docs/app_builder_json_1.png "Download project configuration")
 
-### Configure a New Integration in Adobe Commerce
+### Configure a New Integration in Adobe Commerce  ![Compatibility](https://img.shields.io/badge/PaaS%20Only-0000FF)
 1. In the Adobe Commerce Admin, navigate to **System > Extensions > Integrations**.
 2. Click **Add New Integration**:
 - Enter a name for the integration.
@@ -81,7 +81,7 @@ Credentials needed to enable and configure Adobe IMS in Adobe Commerce
 3. Save the integration and activate it.
 4. Note down the integration credentials (consumer key, consumer secret, access token, and access token secret).
 
-### Install Commerce Eventing Module
+### Install Commerce Eventing Module (only required when running Adobe Commerce versions 2.4.4 or 2.4.5) ![Compatibility](https://img.shields.io/badge/PaaS%20Only-0000FF)
 For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for Adobe Commerce** module following [this documentation](https://developer.adobe.com/commerce/extensibility/events/installation).
 
 > **Note**: By upgrading the module to version 1.6.0 or greater, you will benefit from additional automated onboarding steps.
@@ -145,9 +145,6 @@ For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for A
    # If mesh is already created:
    aio api-mesh update mesh.json
    ```
-In command output you will see MESH ID.
-
-5. Open `./adobe-commerce-kount-app-builder-integration/actions/registration/index.js` find and replace {{MESH_ID}} with MESH ID from previous command.
 
 ### Event Subscription
 Subscribe to Adobe Commerce events:
@@ -173,10 +170,29 @@ KOUNT_API_URL= # Kount API url  (see more details in .env.dist)
 KOUNT_CLIENT_ID= # Kount API Client ID
 KOUNT_API_KEY= # Kount API Key create in step 2
 ```
+4. Webhook Configuration (optional).
 
+4.1. Go to Admin -> Product Configuration  -> Webhooks and create  "New Webhook" configuration for your App Builder app.
+![Kount webhook](./docs/kount_webhook_1.png "Kount new webhook")
+
+`Event`: `Order Status Changes`
+
+`Channel`: `[any name] (for example "adobe-commerce-app-builder")`
+
+`URL`: `https://{{RUNTIME_NAMESPACE}}.adobeioruntime.net/api/v1/web/webhook/kount`
+- Replace `{{RUNTIME_NAMESPACE}}` with App Builder runtime namespace name (can be found in `./adobe-commerce-kount-app-builder-integration/Kount-{workspace}.json` in `project.workspace.details.runtime.namespace.name` path).
+  ![Runtime name](./docs/runtime_name.png "Runtime name")
+
+4.2. Copy Kount webhook Public Key
+
+![Kount webhook](./docs/kount_webhook_2.png "copy Kount new webhook")
+and insert to `.env` file of the App Builder project for the following variable:
+```
+KOUNT_WEBHOOK_PUBLIC_KEY=
+```
 ---
 
-## Adobe IMS Configuration
+## Adobe IMS Configuration  ![Compatibility](https://img.shields.io/badge/PaaS%20Only-0000FF)
 1. Enable Adobe IMS in Adobe Commerce:
    ```bash
    bin/magento admin:adobe-ims:enable
