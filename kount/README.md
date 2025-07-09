@@ -145,6 +145,10 @@ For Adobe Commerce versions 2.4.4 or 2.4.5, install the **Adobe I/O Events for A
    # If mesh is already created:
    aio api-mesh update mesh.json
    ```
+5. Add to `.env` file of the App Builder project "MESH_ID" variable value.  The following value can be copied from the API Mesh Details page in AppBuilder under Organization > Project > Workspace > API Mesh
+```
+MESH_ID=
+```
 
 ### Event Subscription
 Subscribe to Adobe Commerce events:
